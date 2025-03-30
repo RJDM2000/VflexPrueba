@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitaciones</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Agregar fuente moderna desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #232f3e;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            color: #232f3e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .alert-warning {
+            background-color: #e68a00f0;
+            color: #232f3e;
+        }
+        .btn-primary {
+            background-color: #ff9900;
+            border-color: #ff9900;
+        }
+        .btn-primary:hover {
+            background-color: #e68a00;
+            border-color: #e68a00;
+        }
+        .btn-info {
+            background-color: #146eb4;
+            border-color: #146eb4;
+        }
+        .btn-info:hover {
+            background-color: #125a93;
+            border-color: #125a93;
+        }
+        .btn-success {
+            background-color: #009e74;
+            border-color: #009e74;
+        }
+        .btn-success:hover {
+            background-color: #007a5e;
+            border-color: #007a5e;
+        }
+        .hidden {
+            display: none;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .modal-header {
+            border-bottom: 2px solid #ff9900;
+        }
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            color: #232f3e;
+            max-width: 500px;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 600;
+        }
+        .modal-body p {
+            color: #000000;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        .modal-footer button {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .modal-footer .btn-secondary {
+            background-color: #ccc;
+        }
+        /* Estilo de la imagen */
+        .modal-body img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h2>Código de Referencia</h2>
+        <p>Comparte tu código de invitación con amigos y obtén beneficios.</p>
+        
+        <div class="alert alert-warning">
+            <strong>Beneficios:</strong> Invita a tus amigos y obtén recompensas exclusivas.
+        </div>
+
+        <!-- Botones alineados a la izquierda -->
+        <div class="d-flex justify-content-start mb-3">
+            <button class="btn btn-primary mr-2" id="inviteButton">Invite</button>
+            <button class="btn btn-info" data-toggle="modal" data-target="#inviteModal" id="seeInviteButton">See Invite</button>
+        </div>
+
+        <!-- Sección de beneficios para "Invite" -->
+        <div id="inviteSection" class="hidden">
+            <h5>Beneficios:</h5>
+            <p>Los nuevos clientes reciben un fantástico 50% de descuento en su primer pedido. Como el referente, disfrutarás de otros 7 días de servicio gratuito añadidos a tu cuenta.</p>
+            <h5>¿Cómo puedo obtener mi código promocional?</h5>
+            <p>Haz tu primer pago para recibir tu código promocional.</p>
+        </div>
+
+        <h5>Escanea tu código QR</h5>
+        <canvas id="qr-code"></canvas>
+        
+        <div class="mt-3">
+            <button class="btn btn-primary" id="share-email">Email</button>
+            <button class="btn btn-info" id="share-messenger">Messenger</button>
+            <button class="btn btn-success" id="share-whatsapp">WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Modal para See Invite -->
+    <div class="modal fade" id="inviteModal" tabindex="-1" aria-labelledby="inviteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inviteModalLabel">Detalles de Invitación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                <a alt="Detalles de cuenta" class="img-fluid mb-3">
+                    <div class="form-group">
+                        <label for="modalAccountEmail">Correo electrónico de cuenta:</label>
+                        <input type="email" id="modalAccountEmail" class="form-control" placeholder="Introduce tu email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalOldDate">Fecha vieja:</label>
+                        <input type="date" id="modalOldDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalNewDate">Fecha nueva:</label>
+                        <input type="date" id="modalNewDate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="saveInviteDetails">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // URL de invitación
+            let inviteUrl = "https://miweb.com/invitacion";
+            
+            // Generar QR
+            let qr = new QRious({
+                element: document.getElementById("qr-code"),
+                value: inviteUrl,
+                size: 200
+            });
+
+            // Validación de campos en el modal
+            function validateModalFields() {
+                let email = $("#modalAccountEmail").val();
+                let oldDate = $("#modalOldDate").val();
+                let newDate = $("#modalNewDate").val();
+
+                // Validar que el correo electrónico no esté vacío y tenga un formato válido
+                let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                if (!email || !emailRegex.test(email)) {
+                    alert("Por favor, ingrese un correo electrónico válido.");
+                    return false;
+                }
+
+                // Validar que las fechas no estén vacías
+                if (!oldDate || !newDate) {
+                    alert("Por favor, ingrese ambas fechas.");
+                    return false;
+                }
+
+                // Verificar que la fecha nueva no sea anterior a la fecha vieja
+                if (new Date(oldDate) > new Date(newDate)) {
+                    alert("La fecha nueva no puede ser anterior a la fecha vieja.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            // Mostrar la sección "Invite" al hacer clic en el botón
+            $("#inviteButton").click(function () {
+                $("#inviteSection").toggleClass("hidden");
+            });
+
+            // Mostrar modal al hacer clic en See Invite
+            $("#seeInviteButton").click(function () {
+                $("#inviteModal").modal('show');
+            });
+
+            // Función para guardar los detalles de la invitación
+            $("#saveInviteDetails").click(function () {
+                if (validateModalFields()) {
+                    // Guardar los detalles de la invitación o hacer una acción con los datos
+                    alert("Detalles de la invitación guardados correctamente.");
+                    // Aquí puedes enviar los datos a un servidor si es necesario
+                    $("#inviteModal").modal('hide');
+                }
+            });
+
+            // Compartir en Email
+            $("#share-email").click(function () {
+                window.location.href = `mailto:?subject=Únete a nuestra plataforma&body=Usa este enlace para registrarte: ${inviteUrl}`;
+            });
+            
+            // Compartir en Messenger
+            $("#share-messenger").click(function () {
+                window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(inviteUrl)}&app_id=123456789&redirect_uri=${encodeURIComponent(inviteUrl)}`, "_blank");
+            });
+            
+            // Compartir en WhatsApp
+            $("#share-whatsapp").click(function () {
+                window.open(`https://wa.me/?text=${encodeURIComponent('Únete con este enlace: ' + inviteUrl)}`, "_blank");
+            });
+        });
+    </script>
+</body>
+</html>

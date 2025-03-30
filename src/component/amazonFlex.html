@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Web</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll(".sidebar-link");
+            links.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const targetPage = this.getAttribute("href");
+                    const updatedPath = targetPage.replace(
+                        /(calendario|invitaciones|perfil)\.html/i,
+                        (match) => {
+                            switch (match.toLowerCase()) {
+                                case "calendario.html":
+                                    return "rc/component/calendario.html";
+                                case "invitaciones.html":
+                                    return "src/component/invitaciones.html";
+                                case "perfil.html":
+                                    return "src/component/perfil.html";
+                                default:
+                                    return match;
+                            }
+                        }
+                    );
+                    fetch(updatedPath)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            document.querySelector(".main-container").innerHTML = html;
+                        })
+                        .catch(error => console.error("Error loading page:", error));
+                });
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --amazon-orange: #ff9900a7;
+            --amazon-dark: #232F3E;
+            --amazon-light: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Amazon Ember', Arial, sans-serif;
+            background-color: var(--amazon-light);
+            color: var(--amazon-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: var(--amazon-dark);
+            color: white;
+            padding: 10px 20px;
+            content: "c:\\Users\\Christian Rey\\AppData\\Local\\Packages\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TempState\\ScreenClip\\{291752A5-17B3-44C2-BBE2-5C46D1B5CD5F}.png";
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-amazon {
+            background-color: var(--amazon-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .btn-amazon:hover {
+            opacity: 0.9;
+        }
+
+        .right-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sidebar {
+            position: fixed;
+            right: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: var(--amazon-dark);
+            color: white;
+            transition: 0.3s;
+            padding: 20px;
+            border-radius: 0 0 0 15px;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--amazon-light);
+            color: var(--amazon-dark);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal-content h5 {
+            margin-bottom: 15px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        footer {
+            background-color: var(--amazon-dark);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .btn-animated {
+            background: linear-gradient(135deg, #FF9900, #e68a00);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-animated:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-animated::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .btn-animated:hover::after {
+            opacity: 1;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">
+            <img src="C:\Users\Christian Rey\Documents\tabajo bot\V-FLEX-BOT\public\img\logo.avif.jpg" alt="Logo" width="80">
+        </a>
+        <div class="right-buttons">
+            <button class="btn btn-amazon" id="instructionsButton">Instrucciones</button>
+            <button class="btn btn-amazon" id="menuToggle">Menú</button>
+        </div>
+    </nav>
+
+    <div id="instructionsModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 250px; padding: 10px; font-size: 12px;">
+            <button class="close-modal" id="closeModal" style="font-size: 16px;">&times;</button>
+            <h2 style="font-size: 18px; margin-bottom: 10px; font-weight: bold;">Instrucciones</h2>
+            <p style="line-height: 1.4; text-align: left;">
+                Consejos para el uso del bot:
+            </p>
+            <ol style="padding-left: 20px; margin: 0;">
+                <li>Cambia tu contraseña al unirte desde otro sistema.</li>
+                <li>Elimina todos los dispositivos en Amazon excepto <strong>Angel's 4th Android Device</strong>.</li>
+                <li>Evita apagar y encender el sistema con frecuencia.</li>
+                <li>No accedas a la app de Amazon mientras el bot está encendido.</li>
+                <li>Apaga el bot durante entregas y enciéndelo al terminar.</li>
+                <li>Ajusta los filtros para evitar aceptar ofertas no deseadas.</li>
+            </ol>
+        </div>
+    </div>
+    <style>
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+    
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+    
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+    
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #FF9900;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+    
+        .close-modal:hover {
+            color: #e68a00;
+        }
+    </style>
+    
+    <script>
+        $(document).ready(function () {
+            $("#instructionsButton").click(function () {
+                $("#instructionsModal").addClass("active");
+            });
+    
+            $("#closeModal").click(function () {
+                $("#instructionsModal").removeClass("active");
+            });
+    
+            $(document).click(function (event) {
+                if (!$(event.target).closest(".modal-content, #instructionsButton").length) {
+                    $("#instructionsModal").removeClass("active");
+                }
+            });
+        });
+    </script>
+
+
+    <div id="instructionsModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h5>Instrucciones</h5>
+            <p>Aquí van las instrucciones detalladas para el usuario.</p>
+        </div>
+    </div>
+    <div id="sidebar" class="sidebar">
+        <ul style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 0; font-family: 'Arial', sans-serif; font-size: 16px; letter-spacing: 0.5px;">
+            <div>
+                <li><a href="perfil.html" class="sidebar-link" style="font-weight: bold;"><i class="fas fa-user"></i> Perfil</a></li>
+                <li><a href="amazonflex.html" class="sidebar-link" style="font-weight: bold;"><i class="fas fa-truck"></i> Amazon Flex</a></li>
+                <li><a href="calendario.html" class="sidebar-link" style="font-weight: bold;">Calendario</a></li>
+                <li><a href="invitaciones.html" class="sidebar-link" style="font-weight: bold;"><i class="fas fa-envelope"></i> Invitaciones</a></li>
+            </div>
+            <div>
+                <li><a href="logout.html" class="sidebar-link" style="font-weight: bold;">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a></li>
+            </div>
+        </ul>
+    </div>
+
+    <style>
+        .sidebar-link {
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar-link:hover {
+            background-color: var(--amazon-orange);
+            color: var(--amazon-light);
+        }
+
+        .sidebar-link:active {
+            background-color: #e68a00;
+            color: white;
+        }
+    </style><style>
+
+    
+.tabla-amazon {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+.boton-agregar {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #040120;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.boton-agregar:hover {
+    background-color: #070c4d;
+}
+.tabla-amazon th {
+    background-color: #f3f6fc;
+    border: 1px solid #dddfe2;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabla-amazon td {
+    border: 1px solid #dddfe2;
+    padding: 12px;
+}
+
+.boton-actualizar, .boton-eliminar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.boton-actualizar {
+    color: #1a73e8;
+}
+
+.boton-eliminar {
+    color: #dc3545;
+}
+
+.boton-actualizar:hover, .boton-eliminar:hover {
+    opacity: 0.7;
+}
+
+input[type="text"] {
+    width: 100%;
+    border: none;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<table class="tabla-amazon">
+    <thead>
+        <tr>
+            <th>Account</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody id="tabla-body"></tbody>
+        <tr>
+            <td><input type="text" placeholder="Escriba aquí"></td>
+            <td>
+                <span class="boton-actualizar" onclick="actualizacionUsuario(this)">
+                    <i class="fas fa-edit"></i> Actualizar
+                </span>
+            </td>
+            <td>
+                <span class="boton-eliminar" onclick="eliminarUsuario(this)">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="boton-agregar" onclick="agregarFila()">Agregar Fila</button>
+
+<script>
+function actualizacionUsuario(elemento) {
+    const fila = elemento.closest('tr');
+    const input = fila.querySelector('input[type="text"]');
+    const nuevoNombre = prompt('Ingrese el nuevo nombre:', input.value);
+    
+    if (nuevoNombre && nuevoNombre.trim() !== '') {
+        input.value = nuevoNombre.trim();
+        alert('Usuario actualizado');
+    }
+}
+
+function eliminarUsuario(elemento) {
+    if (confirm('¿Está seguro de eliminar este usuario?')) {
+        const fila = elemento.closest('tr');
+        fila.remove();
+        alert('Usuario eliminado');
+    }
+}
+
+function agregarFila() {
+    const tablaBody = document.getElementById('tabla-body');
+    const nuevaFila = document.createElement('tr');
+    nuevaFila.innerHTML = `
+        <td><input type="text" placeholder="Escriba aquí"></td>
+        <td>
+            <span class="boton-actualizar" onclick="actualizacionUsuario(this)">
+                <i class="fas fa-edit"></i> Actualizar
+            </span>
+        </td>
+        <td>
+            <span class="boton-eliminar" onclick="eliminarUsuario(this)">
+                <i class="fas fa-trash-alt"></i> Eliminar
+            </span>
+        </td>
+    `;
+    tablaBody.appendChild(nuevaFila);
+}
+</script>
+
+
+</script>
+</script>
+    <footer>
+        <div>
+            &copy; 2025 VFlex-Bot - <a href="#">Términos</a> | <a href="#">Política de Privacidad</a>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+            $("#menuToggle").click(function (event) {
+                event.stopPropagation();
+                $("#sidebar").toggleClass("active");
+            });
+
+            $(document).click(function (event) {
+                if ($("#sidebar").hasClass("active") && !$(event.target).closest("#sidebar").length) {
+                    $("#sidebar").removeClass("active");
+                }
+            });
+
+            $("#instructionsButton").click(function () {
+                $("#instructionsModal").css("display", "flex");
+            });
+
+            $("#closeModal").click(function () {
+                $("#instructionsModal").css("display", "none");
+            });
+        });
+    </script>
+</body>
+</html>
